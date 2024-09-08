@@ -11,6 +11,14 @@ async function handleUserSignUp(req, res){
     return res.redirect('/user/signin');
 }
 
+async function handleUserSignin(req, res){
+    const {email, password} = req.body;
+    const user = await User.matchPassword(email, password);
+
+    res.redirect('/');
+};
+
 module.exports = {
     handleUserSignUp,
+    handleUserSignin
 };

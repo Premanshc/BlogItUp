@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { handleUserSignUp } = require('../controllers/user');
+const { handleUserSignUp, handleUserSignin } = require('../controllers/user');
 
 router.get('/signin', (req, res) => {
     return res.render('signin');
@@ -11,6 +11,8 @@ router.get('/signin', (req, res) => {
 router.get('/signup', (req, res) => {
     return res.render('signup');
 });
+
+router.post('/signin', handleUserSignin);
 
 router.post('/signup', handleUserSignUp);
 
