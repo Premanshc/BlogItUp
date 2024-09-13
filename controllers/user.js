@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
+const {createTokenForUser} = require('../services/auth');
 
 async function handleUserSignUp(req, res){
     const {fullName, email, password} = req.body;
@@ -12,10 +13,16 @@ async function handleUserSignUp(req, res){
 }
 
 async function handleUserSignin(req, res){
-    const {email, password} = req.body;
-    const user = await User.matchPassword(email, password);
+    try{
+        const {email, password} = req.body;
+    const token = await User.matchPasswordAndGenerateToken(email, password);
 
-    res.redirect('/');
+    res.cookie("token", token).redirect('/');
+    }catch(error){
+        res.render('signin',{
+            error: error.message,
+        })
+    }
 };
 
 module.exports = {
