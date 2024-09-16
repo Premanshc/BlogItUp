@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require('cookie-parser')
 const mongoose = require("mongoose");
+const Blog = require("./models/blog");
 const checkForAuthenticationCookie = require("./middlewares/authentication");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(checkForAuthenticationCookie("token"));
+app.use(express.static(path.resolve("./public")));
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -32,8 +34,12 @@ mongoose
 
 
 //routes
-app.get("/", (req, res) => {
-  res.render("home", { user: req.user });
+app.get("/", async (req, res) => {
+  const allBlogs = await Blog.find({});
+  res.render("home", { 
+    user: req.user,
+    blogs: allBlogs,
+   });
 });
 
 app.use("/user", userRouter);
