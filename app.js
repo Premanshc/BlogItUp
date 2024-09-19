@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const path = require("path");
 const cookieParser = require('cookie-parser')
@@ -6,7 +7,7 @@ const Blog = require("./models/blog");
 const checkForAuthenticationCookie = require("./middlewares/authentication");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const userRouter = require("./routes/user");
 const blogRouter = require("./routes/blog");
@@ -23,7 +24,7 @@ app.set("views", path.resolve("./views"));
 
 //database connection
 mongoose
-  .connect("mongodb://localhost:27017/BlogItUp")
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB");
   })
