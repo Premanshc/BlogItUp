@@ -11,7 +11,7 @@ const BlogSchema = new mongoose.Schema({
     },
     coverImageURL:{
         type: String,
-        default: './images/defaultBlogCover.jpeg',
+        default: '/images/defaultBlogCover.jpeg',
         required: false,
     },
     createdBy:{
